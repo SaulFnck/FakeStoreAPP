@@ -31,18 +31,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Composable
 fun ProductDetailScreen(id:Int)
 {
-
+    //VARIABLES
     val BASE_URL = "https://fakestoreapi.com/"
-
     var product by remember{
         mutableStateOf<Product?>(null)
     }
-
     var isLoading by remember {
         mutableStateOf(true)
     }
 
-    LaunchedEffect(key1 = true) {
+    //RetroFit
+    LaunchedEffect(key1 = true)
+    {
         try {
             //1. Instancia en retroFit
             val retrofitBuilder = Retrofit.Builder() //Patrón de diseño builder
@@ -84,7 +84,11 @@ fun ProductDetailScreen(id:Int)
             )
             Text(text = product!!.title)
         }
-    } else if( product == null && isLoading){
+
+
+
+    } else if( product == null && isLoading)
+    {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
@@ -93,7 +97,8 @@ fun ProductDetailScreen(id:Int)
             CircularProgressIndicator()
         }
     } else{
-       Column() {
+       Column()
+       {
            Text("Error al cargar producto")
        }
     }
