@@ -1,12 +1,22 @@
 package com.example.fakestoreapi.Screens
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,7 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.fakestoreapi.Models.Product
 import com.example.fakestoreapi.ui.theme.FakeStoreAPITheme
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.fakestoreapi.services.ProductsService
 import kotlinx.coroutines.Dispatchers
@@ -70,22 +85,101 @@ fun ProductDetailScreen(id:Int)
 
     if(product != null){
 
-        //CONTENIDO DE PRODUCT_DETAIL
+    //CONTENIDO DE PRODUCT_DETAIL
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            //verticalArrangement = Arrangement.Center
 
         ) {
+            //ImagenSuperior
             AsyncImage(
                 model = product!!.image,
                 contentDescription = product!!.title,
-                modifier = Modifier.size(150.dp)
+                //contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .background(Color.White)
+                    .padding(top = 55.dp, bottom = 20.dp)
+                    .fillMaxWidth()
+                    .height(300.dp),
+                contentScale = ContentScale.Fit
             )
-            Text(text = product!!.title)
+
+            //Title and price
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(100.dp),
+                verticalAlignment = Alignment.CenterVertically
+            )
+            {
+                //Name and category
+                Column(
+                    modifier = Modifier
+                        //.padding(start = 20.dp, end = 70.dp)
+                        .weight(0.75f)
+                ) {
+                    Text(
+                        text = product!!.title,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        lineHeight = 24.sp
+                    )
+                    Text(
+                        text = product!!.category,
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                        //fontWeight = FontWeight.Bold
+                    )
+                }
+
+                //Price
+                Box(
+                    modifier = Modifier.weight(0.25f),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+
+                    Box(
+                        modifier = Modifier
+                            .width(90.dp)
+                            .height(45.dp)
+                            .clip(RoundedCornerShape(15.dp))
+                            .background(Color.Black),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "$"+ product!!.price.toString(),
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+            }
+
+            //Description
+            Column(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxSize()
+            )
+            {
+                Text(
+                    text = "Description",
+                    //color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 26.sp
+                )
+
+                Text(
+                    text = product!!.description,
+                    //color = Color.White,
+                    //fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+            }
         }
-
-
 
     } else if( product == null && isLoading)
     {
@@ -102,6 +196,7 @@ fun ProductDetailScreen(id:Int)
            Text("Error al cargar producto")
        }
     }
+
 }
 
 
